@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <title>Partido de Fútbol Sala</title>
   <style>
     #campo {
@@ -14,32 +15,42 @@
       border: 2px solid #333;
     }
     .jugador {
-      width: 50px;
-      height: 50px;
-      background-color: blue;
-      border-radius: 50%;
+      font-family: 'Roboto', sans-serif; /* Usar la fuente Roboto */
+      width: 80px;
+      height: 80px;
+      background-image: url('camiseta.png'); /* Imagen de camiseta */
+      background-size: cover;
       text-align: center;
-      line-height: 50px;
       color: white;
       position: absolute;
       cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-weight: bold;
     }
-    #jugador1 { top: 250px; left: 100px; }
-    #jugador2 { top: 100px; left: 250px; }
-    #jugador3 { top: 350px; left: 250px; }
-    #jugador4 { top: 100px; left: 500px; }
-    #jugador5 { top: 350px; left: 500px; }
+    .numero {
+      font-size: 18px;
+      font-weight: bold; /* Hacer el número más prominente */
+      margin-top: 2px; /* Reduce el margen superior */
+    }
+    .nombre {
+      font-size: 12px;
+      margin-bottom: 2px; /* Añade un margen inferior para separación */
+    }
+    #jugador1 { top: 225px; left: 50px; }
+    #jugador2 { top: 100px; left: 200px; }
+    #jugador3 { top: 350px; left: 200px; }
+    #jugador4 { top: 100px; left: 450px; }
+    #jugador5 { top: 350px; left: 450px; }
     #timer {
       text-align: center;
       font-size: 20px;
       margin-top: 10px;
     }
-    #accionesJugador {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
-    }
-    #cambioJugador {
+    #accionesJugador, #cambioJugador {
       display: none;
       text-align: center;
       margin-top: 20px;
@@ -93,13 +104,22 @@
   </div>
 
   <script>
-    // Mock de jugadores
+    // Mock de jugadores con números
     const jugadoresConvocados = [
-      'Rubi', 'Peru', 'Javi O.', 'Christian', 'Mini', 'Adrián', 'Mario', 'Javi R.', 'Raúl'
+      { nombre: 'Aitor', numero: 1 },
+      { nombre: 'Peru', numero: 21 },
+      { nombre: 'Javi O.', numero: 7 },
+      { nombre: 'Christian', numero: 11 },
+      { nombre: 'Mini', numero: 3 },
+      { nombre: 'Adrián', numero: 77 },
+      { nombre: 'Mario', numero: 4 },
+      { nombre: 'Javi R.', numero: 5 },
+      { nombre: 'Raúl', numero: 12 },
+      { nombre: 'Rubi', numero: 10 }
     ];
 
-    let jugadoresEnCancha = ['Rubi', 'Peru', 'Javi O.', 'Christian', 'Mini'];
-    let jugadoresEnBanquillo = jugadoresConvocados.filter(jugador => !jugadoresEnCancha.includes(jugador));
+    let jugadoresEnCancha = jugadoresConvocados.slice(0, 5);  // Los primeros 5 en cancha
+    let jugadoresEnBanquillo = jugadoresConvocados.slice(5); // El resto en el banquillo
 
     const jugadoresElements = document.querySelectorAll('.jugador');
     const selectConvocados = document.getElementById('jugadoresConvocados');
@@ -113,7 +133,10 @@
     // Función para actualizar los jugadores en la cancha visualmente
     function actualizarCancha() {
       jugadoresEnCancha.forEach((jugador, index) => {
-        jugadoresElements[index].textContent = jugador;
+        jugadoresElements[index].innerHTML = `
+            <div class="nombre">${jugador.nombre}</div>
+            <div class="numero">${jugador.numero}</div>
+        `;
       });
     }
 
@@ -122,9 +145,9 @@
       selectConvocados.innerHTML = '';
       jugadoresConvocados.forEach(jugador => {
         const option = document.createElement('option');
-        option.value = jugador;
-        option.textContent = jugador;
-        if (!jugadoresEnCancha.includes(jugador)) {
+        option.value = jugador.nombre;
+        option.textContent = `${jugador.nombre} (#${jugador.numero})`;
+        if (!jugadoresEnCancha.some(j => j.nombre === jugador.nombre)) {
           selectConvocados.appendChild(option);
         }
       });
@@ -135,8 +158,8 @@
       selectBanquillo.innerHTML = '';
       jugadoresEnBanquillo.forEach(jugador => {
         const option = document.createElement('option');
-        option.value = jugador;
-        option.textContent = jugador;
+        option.value = jugador.nombre;
+        option.textContent = `${jugador.nombre} (#${jugador.numero})`;
         selectBanquillo.appendChild(option);
       });
     }
@@ -174,29 +197,46 @@
             console.log(`${jugadorSeleccionadoParaAccion.textContent} ha recibido tarjeta`);
             break;
           case 'cambio':
-            // Mostrar la sección de cambio de jugador
             cambioJugadorDiv.style.display = 'block';
             jugadorSeleccionadoParaCambio = jugadorSeleccionadoParaAccion;
             cargarBanquillo();
             break;
         }
-        accionesJugadorDiv.style.display = 'none'; // Ocultar la sección de acciones después de confirmar
+        accionesJugadorDiv.style.display = 'none';
       }
     });
 
     // Evento para confirmar el cambio de jugador
     document.getElementById('confirmarCambio').addEventListener('click', () => {
-      const jugadorSeleccionado = selectBanquillo.value;
-      if (jugadorSeleccionadoParaCambio && jugadorSeleccionado) {
-        const index = jugadoresEnCancha.indexOf(jugadorSeleccionadoParaCambio.textContent);
-        jugadoresEnCancha[index] = jugadorSeleccionado;
-        jugadoresEnBanquillo = jugadoresEnBanquillo.filter(j => j !== jugadorSeleccionado);
-        jugadoresEnBanquillo.push(jugadorSeleccionadoParaCambio.textContent);
-        actualizarCancha();
-        cargarJugadoresConvocados();
-        cargarBanquillo();
-        cambioJugadorDiv.style.display = 'none'; // Ocultar la sección de cambio después de confirmar
-      }
+        const jugadorSeleccionado = selectBanquillo.value;
+
+        if (jugadorSeleccionadoParaCambio && jugadorSeleccionado) {
+            // Obtener el nombre del jugador seleccionado para el cambio
+            const nombreJugadorEnCancha = jugadorSeleccionadoParaCambio.querySelector('.nombre').textContent.trim(); // Obtener el nombre del jugador en cancha
+
+            // Comprobar si el jugador en cancha está en la lista
+            const index = jugadoresEnCancha.findIndex(j => j.nombre.toLowerCase() === nombreJugadorEnCancha.toLowerCase()); // Verificar si el jugador está en cancha
+
+            if (index !== -1) { // Asegúrate de que el jugador está en cancha
+                const jugadorEnCancha = jugadoresEnCancha[index];
+                const nuevoJugador = jugadoresConvocados.find(j => j.nombre === jugadorSeleccionado);
+
+                // Hacer el cambio
+                if (nuevoJugador) {
+                    jugadoresEnCancha[index] = nuevoJugador; // Reemplazar jugador en cancha
+                    jugadoresEnBanquillo = jugadoresEnBanquillo.filter(j => j.nombre !== nuevoJugador.nombre); // Eliminar del banquillo
+                    jugadoresEnBanquillo.push(jugadorEnCancha); // Añadir el jugador que salió al banquillo
+
+                    actualizarCancha();
+                    cargarJugadoresConvocados();
+                    cargarBanquillo();
+                    cambioJugadorDiv.style.display = 'none';
+                    console.log(`${jugadorEnCancha.nombre} ha sido reemplazado por ${nuevoJugador.nombre}.`);
+                }
+            } else {
+                console.error("El jugador seleccionado para el cambio no está en cancha.");
+            }
+        }
     });
 
     // Cargar los jugadores en la cancha y el desplegable al cargar la página
