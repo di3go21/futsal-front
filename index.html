@@ -6,19 +6,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <title>Partido de Fútbol Sala</title>
   <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #e0e0e0; /* Fondo más suave */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh; /* Asegura que el cuerpo ocupe al menos el alto de la ventana */
+    }
+
+    h1 {
+      color: #333;
+      margin: 20px 0;
+      text-align: center;
+      font-size: 2.5rem; /* Tamaño de fuente más grande */
+      text-transform: uppercase; /* Mayúsculas para un estilo más moderno */
+    }
+
     #campo {
-      background-image: url('futsal_field_background.jpeg'); /* Fondo del campo */
+      background-image: url('futsal_field_background.jpeg');
+      background-size: cover;
       width: 740px;
       height: 529px;
       position: relative;
       margin: 20px auto;
       border: 2px solid #333;
+      border-radius: 15px; /* Bordes redondeados más marcados */
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Sombra más prominente */
+      overflow: hidden; /* Para que las sombras no se salgan */
     }
+
     .jugador {
-      font-family: 'Roboto', sans-serif; /* Usar la fuente Roboto */
       width: 80px;
       height: 80px;
-      background-image: url('camiseta.png'); /* Imagen de camiseta */
+      background-image: url('camiseta.png');
       background-size: cover;
       text-align: center;
       color: white;
@@ -30,15 +53,26 @@
       align-items: center;
       flex-direction: column;
       font-weight: bold;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border-radius: 50%; /* Bordes redondeados para las camisetas */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Sombra para las camisetas */
     }
+
+    .jugador:hover {
+      transform: scale(1.1); /* Aumenta un poco más al pasar el mouse */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); /* Sombra más fuerte al pasar el mouse */
+    }
+
     .numero {
-      font-size: 18px;
-      font-weight: bold; /* Hacer el número más prominente */
-      margin-top: 2px; /* Reduce el margen superior */
+      font-size: 20px; /* Tamaño de número más grande */
+      font-weight: bold;
+      margin-top: 2px;
     }
+
     .nombre {
-      font-size: 12px;
-      margin-bottom: 2px; /* Añade un margen inferior para separación */
+      font-size: 14px; /* Tamaño de nombre un poco más grande */
+      margin-bottom: 2px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra para el texto */
     }
     #jugador1 { top: 225px; left: 50px; }
     #jugador2 { top: 100px; left: 200px; }
@@ -47,13 +81,53 @@
     #jugador5 { top: 350px; left: 450px; }
     #timer {
       text-align: center;
-      font-size: 20px;
+      font-size: 24px; /* Tamaño de fuente más grande para el timer */
       margin-top: 10px;
+      font-weight: bold;
+      color: #555; /* Color de texto más suave */
     }
+
+    .selector-container, .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #007BFF; /* Color azul para el botón */
+      color: white;
+      border: none;
+      padding: 12px 24px; /* Aumento del padding */
+      font-size: 18px; /* Tamaño de fuente más grande */
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para el botón */
+    }
+
+    button:hover {
+      background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+      transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
+    }
+
     #accionesJugador, #cambioJugador {
       display: none;
       text-align: center;
       margin-top: 20px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: box-shadow 0.3s;
+    }
+
+    #accionesJugador:hover, #cambioJugador:hover {
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Sombra más fuerte al pasar el mouse */
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold; /* Negrita para las etiquetas */
     }
   </style>
 </head>
@@ -72,12 +146,6 @@
 
   <!-- Temporizador -->
   <div id="timer">Tiempo: 0s</div>
-
-  <!-- Desplegable para jugadores convocados -->
-  <div style="text-align: center; margin-top: 20px;">
-    <label for="jugadoresConvocados">Jugadores Convocados: </label>
-    <select id="jugadoresConvocados" multiple size="5"></select>
-  </div>
 
   <!-- Botón para iniciar el partido -->
   <div style="text-align: center; margin-top: 20px;">
@@ -122,7 +190,6 @@
     let jugadoresEnBanquillo = jugadoresConvocados.slice(5); // El resto en el banquillo
 
     const jugadoresElements = document.querySelectorAll('.jugador');
-    const selectConvocados = document.getElementById('jugadoresConvocados');
     const accionesJugadorDiv = document.getElementById('accionesJugador');
     const cambioJugadorDiv = document.getElementById('cambioJugador');
     const selectAccion = document.getElementById('selectAccion');
@@ -137,19 +204,6 @@
             <div class="nombre">${jugador.nombre}</div>
             <div class="numero">${jugador.numero}</div>
         `;
-      });
-    }
-
-    // Cargar los jugadores convocados en el desplegable
-    function cargarJugadoresConvocados() {
-      selectConvocados.innerHTML = '';
-      jugadoresConvocados.forEach(jugador => {
-        const option = document.createElement('option');
-        option.value = jugador.nombre;
-        option.textContent = `${jugador.nombre} (#${jugador.numero})`;
-        if (!jugadoresEnCancha.some(j => j.nombre === jugador.nombre)) {
-          selectConvocados.appendChild(option);
-        }
       });
     }
 
@@ -228,7 +282,6 @@
                     jugadoresEnBanquillo.push(jugadorEnCancha); // Añadir el jugador que salió al banquillo
 
                     actualizarCancha();
-                    cargarJugadoresConvocados();
                     cargarBanquillo();
                     cambioJugadorDiv.style.display = 'none';
                     console.log(`${jugadorEnCancha.nombre} ha sido reemplazado por ${nuevoJugador.nombre}.`);
@@ -242,7 +295,6 @@
     // Cargar los jugadores en la cancha y el desplegable al cargar la página
     window.onload = function() {
       actualizarCancha();
-      cargarJugadoresConvocados();
     }
   </script>
 
