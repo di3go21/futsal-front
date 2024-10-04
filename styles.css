@@ -1,0 +1,171 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e0e0e0;
+    /* Fondo más suave */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    /* Asegura que el cuerpo ocupe al menos el alto de la ventana */
+}
+
+h1 {
+    color: #333;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 2.5rem;
+    /* Tamaño de fuente más grande */
+    text-transform: uppercase;
+    /* Mayúsculas para un estilo más moderno */
+}
+
+#campo {
+    background-image: url('futsal_field_background.jpeg');
+    background-size: cover;
+    width: 740px;
+    height: 529px;
+    position: relative;
+    margin: 20px auto;
+    border: 2px solid #333;
+    border-radius: 15px;
+    /* Bordes redondeados más marcados */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    /* Sombra más prominente */
+    overflow: hidden;
+    /* Para que las sombras no se salgan */
+}
+
+.jugador {
+    width: 80px;
+    height: 80px;
+    background-image: url('camiseta.png');
+    background-size: cover;
+    text-align: center;
+    color: white;
+    position: absolute;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: bold;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 20%;
+    /* Bordes redondeados para las camisetas */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    /* Sombra para las camisetas */
+}
+
+.jugador:hover {
+    transform: scale(1.1);
+    /* Aumenta un poco más al pasar el mouse */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    /* Sombra más fuerte al pasar el mouse */
+}
+
+.numero {
+    font-size: 20px;
+    /* Tamaño de número más grande */
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+.nombre {
+    font-size: 14px;
+    /* Tamaño de nombre un poco más grande */
+    margin-bottom: 2px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    /* Sombra para el texto */
+}
+
+#jugador1 {
+    top: 225px;
+    left: 50px;
+}
+
+#jugador2 {
+    top: 100px;
+    left: 200px;
+}
+
+#jugador3 {
+    top: 350px;
+    left: 200px;
+}
+
+#jugador4 {
+    top: 100px;
+    left: 450px;
+}
+
+#jugador5 {
+    top: 350px;
+    left: 450px;
+}
+
+#timer {
+    text-align: center;
+    font-size: 24px;
+    /* Tamaño de fuente más grande para el timer */
+    margin-top: 10px;
+    font-weight: bold;
+    color: #555;
+    /* Color de texto más suave */
+}
+
+.selector-container,
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #007BFF;
+    /* Color azul para el botón */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    /* Aumento del padding */
+    font-size: 18px;
+    /* Tamaño de fuente más grande */
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra para el botón */
+}
+
+button:hover {
+    background-color: #0056b3;
+    /* Color más oscuro al pasar el mouse */
+    transform: scale(1.05);
+    /* Efecto de zoom al pasar el mouse */
+}
+
+#accionesJugador,
+#cambioJugador {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s;
+}
+
+#accionesJugador:hover,
+#cambioJugador:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    /* Sombra más fuerte al pasar el mouse */
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    /* Negrita para las etiquetas */
+}

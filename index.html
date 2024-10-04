@@ -1,140 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <title>Partido de Fútbol Sala</title>
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #e0e0e0; /* Fondo más suave */
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh; /* Asegura que el cuerpo ocupe al menos el alto de la ventana */
-    }
-
-    h1 {
-      color: #333;
-      margin: 20px 0;
-      text-align: center;
-      font-size: 2.5rem; /* Tamaño de fuente más grande */
-      text-transform: uppercase; /* Mayúsculas para un estilo más moderno */
-    }
-
-    #campo {
-      background-image: url('futsal_field_background.jpeg');
-      background-size: cover;
-      width: 740px;
-      height: 529px;
-      position: relative;
-      margin: 20px auto;
-      border: 2px solid #333;
-      border-radius: 15px; /* Bordes redondeados más marcados */
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Sombra más prominente */
-      overflow: hidden; /* Para que las sombras no se salgan */
-    }
-
-    .jugador {
-      width: 80px;
-      height: 80px;
-      background-image: url('camiseta.png');
-      background-size: cover;
-      text-align: center;
-      color: white;
-      position: absolute;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      font-weight: bold;
-      transition: transform 0.3s, box-shadow 0.3s;
-      border-radius: 50%; /* Bordes redondeados para las camisetas */
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Sombra para las camisetas */
-    }
-
-    .jugador:hover {
-      transform: scale(1.1); /* Aumenta un poco más al pasar el mouse */
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); /* Sombra más fuerte al pasar el mouse */
-    }
-
-    .numero {
-      font-size: 20px; /* Tamaño de número más grande */
-      font-weight: bold;
-      margin-top: 2px;
-    }
-
-    .nombre {
-      font-size: 14px; /* Tamaño de nombre un poco más grande */
-      margin-bottom: 2px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra para el texto */
-    }
-    #jugador1 { top: 225px; left: 50px; }
-    #jugador2 { top: 100px; left: 200px; }
-    #jugador3 { top: 350px; left: 200px; }
-    #jugador4 { top: 100px; left: 450px; }
-    #jugador5 { top: 350px; left: 450px; }
-    #timer {
-      text-align: center;
-      font-size: 24px; /* Tamaño de fuente más grande para el timer */
-      margin-top: 10px;
-      font-weight: bold;
-      color: #555; /* Color de texto más suave */
-    }
-
-    .selector-container, .button-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    button {
-      background-color: #007BFF; /* Color azul para el botón */
-      color: white;
-      border: none;
-      padding: 12px 24px; /* Aumento del padding */
-      font-size: 18px; /* Tamaño de fuente más grande */
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s, transform 0.3s;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para el botón */
-    }
-
-    button:hover {
-      background-color: #0056b3; /* Color más oscuro al pasar el mouse */
-      transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
-    }
-
-    #accionesJugador, #cambioJugador {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      transition: box-shadow 0.3s;
-    }
-
-    #accionesJugador:hover, #cambioJugador:hover {
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Sombra más fuerte al pasar el mouse */
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold; /* Negrita para las etiquetas */
-    }
-  </style>
 </head>
 <body>
 
   <h1 style="text-align: center;">Partido de Fútbol Sala</h1>
-  
+
+  <!-- Temporizador -->
+  <div id="timer">Tiempo: 00:00</div>
+
   <!-- Campo de fútbol sala -->
   <div id="campo">
     <div class="jugador" id="jugador1"></div>
@@ -144,12 +24,10 @@
     <div class="jugador" id="jugador5"></div>
   </div>
 
-  <!-- Temporizador -->
-  <div id="timer">Tiempo: 0s</div>
-
-  <!-- Botón para iniciar el partido -->
+  <!-- Botones para iniciar y pausar el partido -->
   <div style="text-align: center; margin-top: 20px;">
     <button id="iniciarPartido">Iniciar Partido</button>
+    <button id="pausarPartido">Pausar Partido</button>
   </div>
 
   <!-- Sección para realizar acciones sobre un jugador -->
@@ -194,8 +72,40 @@
     const cambioJugadorDiv = document.getElementById('cambioJugador');
     const selectAccion = document.getElementById('selectAccion');
     const selectBanquillo = document.getElementById('selectBanquillo');
+    const portero = document.getElementById('jugador1');
     let jugadorSeleccionadoParaAccion = null;
     let jugadorSeleccionadoParaCambio = null;
+
+    // Cronómetro
+    let tiempo = 0;
+    let temporizador;
+    let enMarcha = false;
+
+    // Función para convertir el tiempo a mm:ss
+    function formatearTiempo(segundos) {
+      const minutos = Math.floor(segundos / 60);
+      const segundosRestantes = segundos % 60;
+      const formatoMinutos = minutos < 10 ? `0${minutos}` : minutos;
+      const formatoSegundos = segundosRestantes < 10 ? `0${segundosRestantes}` : segundosRestantes;
+      return `${formatoMinutos}:${formatoSegundos}`;
+    }
+
+    // Función para iniciar el temporizador
+    function iniciarTemporizador() {
+      if (!enMarcha) { // Solo iniciar si no está ya en marcha
+        enMarcha = true;
+        temporizador = setInterval(() => {
+          tiempo++;
+          document.getElementById('timer').textContent = `Tiempo: ${formatearTiempo(tiempo)}`;
+        }, 1000);
+      }
+    }
+
+    // Función para pausar el temporizador
+    function pausarTemporizador() {
+      clearInterval(temporizador);
+      enMarcha = false;
+    }
 
     // Función para actualizar los jugadores en la cancha visualmente
     function actualizarCancha() {
@@ -218,16 +128,6 @@
       });
     }
 
-    // Función para iniciar el temporizador
-    let tiempo = 0;
-    let temporizador;
-    function iniciarTemporizador() {
-      temporizador = setInterval(() => {
-        tiempo++;
-        document.getElementById('timer').textContent = `Tiempo: ${tiempo}s`;
-      }, 1000);
-    }
-
     // Añadir eventos de clic a los jugadores para seleccionar acción
     jugadoresElements.forEach(jugadorElement => {
       jugadorElement.addEventListener('click', () => {
@@ -242,13 +142,13 @@
       if (jugadorSeleccionadoParaAccion && accionSeleccionada) {
         switch (accionSeleccionada) {
           case 'gol':
-            console.log(`${jugadorSeleccionadoParaAccion.textContent} ha metido gol`)
+            console.log(`${jugadorSeleccionadoParaAccion.textContent} ha metido gol al minuto ${formatearTiempo(tiempo)}`);
             break;
           case 'asistencia':
-            console.log(`${jugadorSeleccionadoParaAccion.textContent} ha dado asistencia`);
+            console.log(`${jugadorSeleccionadoParaAccion.textContent} ha dado asistencia al minuto ${formatearTiempo(tiempo)}`);
             break;
           case 'tarjeta':
-            console.log(`${jugadorSeleccionadoParaAccion.textContent} ha recibido tarjeta`);
+            console.log(`${jugadorSeleccionadoParaAccion.textContent} ha recibido tarjeta al minuto ${formatearTiempo(tiempo)}`);
             break;
           case 'cambio':
             cambioJugadorDiv.style.display = 'block';
@@ -262,41 +162,42 @@
 
     // Evento para confirmar el cambio de jugador
     document.getElementById('confirmarCambio').addEventListener('click', () => {
-        const jugadorSeleccionado = selectBanquillo.value;
+      const jugadorSeleccionado = selectBanquillo.value;
 
-        if (jugadorSeleccionadoParaCambio && jugadorSeleccionado) {
-            // Obtener el nombre del jugador seleccionado para el cambio
-            const nombreJugadorEnCancha = jugadorSeleccionadoParaCambio.querySelector('.nombre').textContent.trim(); // Obtener el nombre del jugador en cancha
+      if (jugadorSeleccionadoParaCambio && jugadorSeleccionado) {
+        const nombreJugadorEnCancha = jugadorSeleccionadoParaCambio.querySelector('.nombre').textContent.trim();
+        const index = jugadoresEnCancha.findIndex(j => j.nombre.toLowerCase() === nombreJugadorEnCancha.toLowerCase());
 
-            // Comprobar si el jugador en cancha está en la lista
-            const index = jugadoresEnCancha.findIndex(j => j.nombre.toLowerCase() === nombreJugadorEnCancha.toLowerCase()); // Verificar si el jugador está en cancha
+        if (index !== -1) {
+          const jugadorEnCancha = jugadoresEnCancha[index];
+          const nuevoJugador = jugadoresConvocados.find(j => j.nombre === jugadorSeleccionado);
 
-            if (index !== -1) { // Asegúrate de que el jugador está en cancha
-                const jugadorEnCancha = jugadoresEnCancha[index];
-                const nuevoJugador = jugadoresConvocados.find(j => j.nombre === jugadorSeleccionado);
+          if (nuevoJugador) {
+            jugadoresEnCancha[index] = nuevoJugador;
+            jugadoresEnBanquillo = jugadoresEnBanquillo.filter(j => j.nombre !== nuevoJugador.nombre);
+            jugadoresEnBanquillo.push(jugadorEnCancha);
 
-                // Hacer el cambio
-                if (nuevoJugador) {
-                    jugadoresEnCancha[index] = nuevoJugador; // Reemplazar jugador en cancha
-                    jugadoresEnBanquillo = jugadoresEnBanquillo.filter(j => j.nombre !== nuevoJugador.nombre); // Eliminar del banquillo
-                    jugadoresEnBanquillo.push(jugadorEnCancha); // Añadir el jugador que salió al banquillo
-
-                    actualizarCancha();
-                    cargarBanquillo();
-                    cambioJugadorDiv.style.display = 'none';
-                    console.log(`${jugadorEnCancha.nombre} ha sido reemplazado por ${nuevoJugador.nombre}.`);
-                }
-            } else {
-                console.error("El jugador seleccionado para el cambio no está en cancha.");
-            }
+            actualizarCancha();
+            cargarBanquillo();
+            cambioJugadorDiv.style.display = 'none';
+            console.log(`${jugadorEnCancha.nombre} ha sido reemplazado por ${nuevoJugador.nombre} al minuto ${formatearTiempo(tiempo)}.`);
+          }
+        } else {
+          console.error("El jugador seleccionado para el cambio no está en cancha.");
         }
+      }
     });
 
-    // Cargar los jugadores en la cancha y el desplegable al cargar la página
-    window.onload = function() {
+    // Cargar los jugadores en la cancha al cargar la página
+    window.onload = function () {
       actualizarCancha();
     }
+
+    // Eventos de los botones de inicio y pausa
+    document.getElementById('iniciarPartido').addEventListener('click', iniciarTemporizador);
+    document.getElementById('pausarPartido').addEventListener('click', pausarTemporizador);
   </script>
 
 </body>
+
 </html>
