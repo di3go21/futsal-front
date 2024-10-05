@@ -1,0 +1,53 @@
+
+
+<h1 style="text-align: center;">Partido de Fútbol Sala</h1>
+
+<!-- Campo de fútbol sala -->
+
+
+
+
+<div id="campo">
+  @for (jugador of jugadoresEnCancha; track jugador.numero; let idx = $index) {
+    <div class="jugador" id="jugador{{idx+1}}" (click)="clicJugador(jugador.numero)">
+      <div class="nombre">{{jugador.nombre}}</div>
+      <div class="numero">{{jugador.numero}}</div>
+    </div>
+  } @empty {
+  }
+</div>
+
+<!-- Temporizador -->
+<div id="timer">Tiempo: {{ tiempoFormateado }}</div>
+
+<!-- Botón para iniciar el partido -->
+<div style="text-align: center; margin-top: 20px;">
+  <button id="iniciarPartido" (click)="iniciarTemporizador()" style="display: {{showIniciarReloj}}" >{{ textoIniciar }}</button>
+
+  <button id="pausarPartido" (click)="pausarTemporizador()" style="display: {{showPausar}}" >Pausar Partido</button>
+</div>
+
+<!-- Sección para realizar acciones sobre un jugador -->
+<div id="accionesJugador" style="display:{{accionesDisplauValue}}">
+  <label for="selectAccion">Seleccionar acción para el jugador: </label>
+  <select id="selectAccion" [(ngModel)]="accionSeleccionada">
+
+    @for (accion of acciones; track accion.label) {
+      <option  [value]="accion.value">{{ accion.label }}</option>
+    } @empty {
+    }
+  </select>
+  <button id="confirmarAccion" (click)="confirmarAccion()">Confirmar Acción</button>
+</div>
+
+<!-- Sección para realizar cambios de jugadores -->
+<div id="cambioJugador" style="display: {{displayCambios}}">
+  <label for="selectBanquillo">Seleccionar jugador del banquillo: </label>
+  <select id="selectBanquillo" [(ngModel)]="jugadorNuevo">
+    @for (jugador of jugadoresEnBanquillo; track jugador.nombre) {
+      <option [value]="jugador.numero">{{ jugador.nombre }}</option>
+    } @empty {
+    }
+  </select>
+  <button id="confirmarCambio" (click)="confirmarCambio()">Confirmar Cambio</button>
+</div>
