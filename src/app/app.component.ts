@@ -43,7 +43,8 @@ export class AppComponent {
     {nombre: 'Aparicio', numero: 99},
     {nombre: 'Alf', numero: 8},
     {nombre: 'Cuñao', numero: 98},
-    {nombre: 'Pratsquez', numero: 13}
+    {nombre: 'Blazquez', numero: 13},
+    {nombre: 'Prats', numero: 23}
   ];
 
   acciones = [
